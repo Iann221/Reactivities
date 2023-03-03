@@ -1,13 +1,13 @@
 import { Button, Card, Image } from "semantic-ui-react";
-import { Activity } from '../../../app/models/activity';
+import LoadingComponent from "../../../app/layout/LoadingComponent";
+import { useStore } from "../../../app/stores/store";
 
-interface Props {
-    activity: Activity;
-    cancelSelectActivity: () => (void);
-    openForm: (id: string) => (void);
-}
+export default function ActivityDetails(){
+    const {activityStore} = useStore();
+    const {selectedActivity: activity, openForm, cancelSelectedActivity} = activityStore; //: activity mksdnya itu didefine as activity di file ini
 
-export default function ActivityDetails({activity, cancelSelectActivity, openForm}:Props){
+    if(!activity) return <LoadingComponent content={""} />; //cek apa ada activity, walau fix ada. ini mah cm bwt ngilangin errornya aja
+
     return(
         <Card fluid>
             {/* // fluid: ngambil sisa spacenya */}
@@ -26,7 +26,7 @@ export default function ActivityDetails({activity, cancelSelectActivity, openFor
                 {/* // klo 2, dia kefill sampe ujung */}
                     <Button onClick={() => openForm(activity.id)} basic color='blue' content='Edit'/>
                     {/* // klo basic, dia buttonnya ga fill */}
-                    <Button onClick={cancelSelectActivity} basic color='grey' content='Cancel'/>
+                    <Button onClick={cancelSelectedActivity} basic color='grey' content='Cancel'/>
                </Button.Group>
             </Card.Content>
         </Card>
