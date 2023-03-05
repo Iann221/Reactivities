@@ -26,6 +26,39 @@ export default class ActivityStore{
         // sort date
     }
 
+    get groupedActivities() {
+        return Object.entries(
+            this.activitiesByDate.reduce((activities, activity) => {
+                const date = activity.date; // key for each object
+                activities[date] = activities[date] ? [...activities[date], activity] : [activity]
+                // apa activities punya date?
+                return activities; // activities akan punya tipe {"2022-11-11" : [Activity], dst}
+            }, {} as {[key: string]: Activity[]}) // initial value
+        ) 
+        // final object:
+        // [
+        //     [
+        //       "2020-01-04",
+        //       [
+        //         {
+        //             activity1
+        //         }
+        //       ]
+        //     ]
+        //     [
+        //       "2020-02-04",
+        //       [
+        //         {
+        //             activity1
+        //         },
+        //         {
+        //             activity2
+        //         }
+        //       ]
+        //     ] 
+        //   ]
+    }
+
     loadActivities = async () => {
         this.setLoadingInitial(true);
         try {

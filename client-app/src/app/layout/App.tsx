@@ -4,6 +4,7 @@ import { useStore } from '../stores/store';
 import { observer } from 'mobx-react-lite';
 import { Outlet, useLocation } from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
+import { Fragment } from 'react';
 
 function App() {
   // cuma ambil activityStore aja
@@ -59,7 +60,7 @@ function App() {
   const location = useLocation()
 
   return (
-    <>
+    <div>
         {location.pathname === '/' ? <HomePage /> : (
           <>
           <NavBar/>
@@ -72,7 +73,7 @@ function App() {
         </Container> 
           </>
         )} 
-    </>
+    </div>
   );
 }
 
