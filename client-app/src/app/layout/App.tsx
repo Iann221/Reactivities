@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { Outlet, useLocation } from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
 import { Fragment } from 'react';
+import { ToastContainer} from 'react-toastify';
 
 function App() {
   // cuma ambil activityStore aja
@@ -61,6 +62,7 @@ function App() {
 
   return (
     <div>
+        <ToastContainer position='bottom-right' hideProgressBar theme='colored' />
         {location.pathname === '/' ? <HomePage /> : (
           <>
           <NavBar/>

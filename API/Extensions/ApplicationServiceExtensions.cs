@@ -1,6 +1,8 @@
 
 using Application.Activities;
 using Application.Core;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -27,6 +29,9 @@ namespace API.Extensions
             services.AddMediatR(typeof(List.Handler)); // registers mediator as a service. typeof mksdnya kita specify lokasi handlernya
             // for some reason dia cm perlu daftarin yg list aja
             services.AddAutoMapper(typeof(MappingProfiles).Assembly); // registers mapper as a service
+            services.AddFluentValidationAutoValidation();
+            services.AddValidatorsFromAssemblyContaining<Create>(); // where to look for validator from
+
             return services;
         }
     }
