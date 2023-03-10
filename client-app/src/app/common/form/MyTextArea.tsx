@@ -14,7 +14,7 @@ export default function MyTextArea(props: Props) {
         <Form.Field error={meta.touched && !!meta.error}>
             {/* // apakah field udah ditouch dan tidak ada error object, klo iya jadi warna pink. !! berarti jadi boolean*/}
             <label>{props.label}</label> 
-            <textarea {...field} {...props}/>
+            <textarea {...field} {...props}/> 
             {meta.touched && meta.error ? (
                 <Label basic color='red'>{meta.error}</Label>
             ) : null}

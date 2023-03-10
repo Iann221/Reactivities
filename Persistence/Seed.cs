@@ -1,11 +1,27 @@
 using Domain;
+using Microsoft.AspNetCore.Identity;
 
 namespace Persistence
 {
     public class Seed
     {
-        public static async Task SeedData(DataContext context)
+        public static async Task SeedData(DataContext context, UserManager<AppUser> userManager) //usermanager cm bwt yg identity
         {
+            if (!userManager.Users.Any()) // cek dah pny user ato belom, klo belom bikin
+            {
+                var users = new List<AppUser>
+                {
+                    new AppUser{DisplayName = "Bob", UserName = "bob", Email = "bob@test.com"},
+                    new AppUser{DisplayName = "Tom", UserName = "tom", Email = "tom@test.com"},
+                    new AppUser{DisplayName = "Jane", UserName = "jane", Email = "jane@test.com"},
+                };
+
+                foreach (var user in users){
+                    await userManager.CreateAsync(user, "Pa$$w0rd"); // create the user (user, passwordnya)
+                    // klo ini gaperlu save changes
+                }
+            }
+
             if (context.Activities.Any()) return; // dah punya activities belom
             
             var activities = new List<Activity>
