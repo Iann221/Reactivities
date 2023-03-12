@@ -22,7 +22,7 @@ export default observer(function ActivityDashboard(){
         if(activityRegistry.size <= 1) loadActivities();
     }, [loadActivities]) // [] tu dependency agar ga manggil useEffect berkali setelah loaded
     
-    if(activityStore.loadingInitial) return <LoadingComponent content='Loading app'/>
+    if(activityStore.loadingInitial) return <LoadingComponent content='Loading Activities...'/>
 
     return (
         <Grid>
