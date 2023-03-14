@@ -1,8 +1,10 @@
 
 using Application.Activities;
 using Application.Core;
+using Application.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Infrastructure.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -31,6 +33,8 @@ namespace API.Extensions
             services.AddAutoMapper(typeof(MappingProfiles).Assembly); // registers mapper as a service
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining<Create>(); // where to look for validator from
+            services.AddHttpContextAccessor(); // agar httpcontextaccessor bisa dipake di infrastructure project
+            services.AddScoped<IUserAccessor, UserAccessor>(); // bisa make methodnya infrastructure
 
             return services;
         }
