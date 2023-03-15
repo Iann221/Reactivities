@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Button, Header, Segment } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
-import { Activity } from "../../../app/models/activity";
+import { ActivityFormValues } from "../../../app/models/activity";
 import { useStore } from "../../../app/stores/store";
 import {v4 as uuid} from 'uuid';
 import { Formik, Form } from "formik";
@@ -17,19 +17,23 @@ import MyDateInput from "../../../app/common/form/MyDateInput";
 export default observer(function ActivityForm() {
     const {activityStore} = useStore();
     const {createActivity, updateActivity, 
-        loading, loadActivity, loadingInitial} = activityStore;
+         loadActivity, loadingInitial} = activityStore;
     const {id} = useParams();
     const navigate = useNavigate();
 
-    const [activity, setActivity] = useState<Activity>({
-        id: '',
-        title: '',
-        category: '',
-        description: '',
-        date: null,
-        city: '',
-        venue: ''
-    });
+    // before activity punya attendee:
+    // const [activity, setActivity] = useState<Activity>({
+    //     id: '',
+    //     title: '',
+    //     category: '',
+    //     description: '',
+    //     date: null,
+    //     city: '',
+    //     venue: ''
+    // });
+
+    // after activity punya attendee:
+    const [activity, setActivity] = useState<ActivityFormValues>(new ActivityFormValues());
 
     // isi rule validationnya
     const validationSchema = Yup.object({
@@ -42,13 +46,16 @@ export default observer(function ActivityForm() {
     })
 
     useEffect(() => {
-        if(id) loadActivity(id).then((activity) => setActivity(activity!))
-    }, [id, loadActivity]);
+        if(id) loadActivity(id).then((activity) => setActivity(new ActivityFormValues(activity))) 
+    }, [id, loadActivity]); // yeah tipe Activity bisa diterima di ActivityFormValues asalkan tipenya mirip
 
-    function handleFormSubmit(activity: Activity){
+    function handleFormSubmit(activity: ActivityFormValues){
                 // walau activity.id='', tetap dihitung !activity.id
         if (!activity.id) {
-            activity.id = uuid();
+            let newActivity = {
+                ...activity,
+                id: uuid()
+            }
             createActivity(activity).then(() => navigate(`/activities/${activity.id}`))
         } else {
             updateActivity(activity).then(() => navigate(`/activities/${activity.id}`))
@@ -88,7 +95,7 @@ export default observer(function ActivityForm() {
                     <MyTextInput placeholder='Venue'  name='venue' ></MyTextInput>
                     <Button 
                         disabled={isSubmitting || !dirty || !isValid}
-                        loading={loading} floated='right' 
+                        loading={isSubmitting} floated='right' 
                         positive type='submit' content='Submit'/>
                     <Button as={Link} to='/activities' floated='right' type='button' content='Cancel'/>
                 </Form>
