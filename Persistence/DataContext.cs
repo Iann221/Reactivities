@@ -10,8 +10,9 @@ namespace Persistence
         {
         }
 
-        public DbSet<Activity> Activities { get; set; }
+        public DbSet<Activity> Activities { get; set; } // agar bisa ngequery activities dari data context
         public DbSet<ActivityAttendee> ActivityAttendees { get; set; }
+        public DbSet<Photo> Photos { get; set; } // in case ingin query our photo directly from data context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

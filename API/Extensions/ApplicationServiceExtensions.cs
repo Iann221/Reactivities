@@ -4,6 +4,7 @@ using Application.Core;
 using Application.Interfaces;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Infrastructure.Photos;
 using Infrastructure.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,8 @@ namespace API.Extensions
             services.AddValidatorsFromAssemblyContaining<Create>(); // where to look for validator from
             services.AddHttpContextAccessor(); // agar httpcontextaccessor bisa dipake di infrastructure project
             services.AddScoped<IUserAccessor, UserAccessor>(); // bisa make methodnya infrastructure
+            services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+            services.Configure<CloudinarySettings>(config.GetSection("Cloudinary")); // buat metain dari appsettings.json ke cloudinarySetting
 
             return services;
         }

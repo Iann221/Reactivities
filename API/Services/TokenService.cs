@@ -16,7 +16,7 @@ namespace API.Services
             
         }
         public string CreateToken(AppUser user)
-        { // claim ini buat jadi payload
+        { // claim ini buat jadi payload. payload tu bagian dari token
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.UserName),
