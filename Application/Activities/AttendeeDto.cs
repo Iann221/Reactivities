@@ -11,5 +11,8 @@ namespace Application.Activities
         public string DisplayName { get; set; }
         public string Bio { get; set; }
         public string Image { get; set; }
+        public bool Following { get; set; } // to know if we follow that user
+        public int FollowersCount { get; set; }
+        public int FollowingCount { get; set; }
     }
 }

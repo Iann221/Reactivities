@@ -25,7 +25,10 @@ namespace API.Extensions
             });
             services.AddCors(opt => {
                 opt.AddPolicy("CorsPolicy", policy => {
-                    policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000");
+                    policy.AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials() // buat ngilangin error signalr
+                    .WithOrigins("http://localhost:3000");
                 });
             });
             // buat daftarin api2nya:
@@ -38,6 +41,7 @@ namespace API.Extensions
             services.AddScoped<IUserAccessor, UserAccessor>(); // bisa make methodnya infrastructure
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary")); // buat metain dari appsettings.json ke cloudinarySetting
+            services.AddSignalR(); 
 
             return services;
         }

@@ -1,5 +1,6 @@
 using API.Extensions;
 using API.Middleware;
+using API.SignalR;
 using Application.Activities;
 using Application.Core;
 using Domain;
@@ -37,6 +38,7 @@ app.UseAuthentication(); // pastikan sebelum authorization, ditambah klo authent
 app.UseAuthorization(); // authorizes a user to access secure resources.
 
 app.MapControllers();
+app.MapHub<ChatHub>("/chat"); // specify route buat user ketika connect to chathub
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

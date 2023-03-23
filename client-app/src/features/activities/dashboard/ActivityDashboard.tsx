@@ -20,7 +20,7 @@ export default observer(function ActivityDashboard(){
 
     useEffect(() => { // what we want to do when our app loads up
         if(activityRegistry.size <= 1) loadActivities();
-    }, [loadActivities]) // [] tu dependency agar ga manggil useEffect berkali setelah loaded
+    }, [loadActivities, activityRegistry]) // [] tu dependency agar ga manggil useEffect berkali setelah loaded
     
     if(activityStore.loadingInitial) return <LoadingComponent content='Loading Activities...'/>
 

@@ -11,12 +11,13 @@ import ActivityDetailedSidebar from "./ActivityDetailedSidebar";
 
 export default observer(function ActivityDetails(){
     const {activityStore} = useStore();
-    const {selectedActivity: activity, loadActivity, loadingInitial} = activityStore; //: activity mksdnya itu didefine as activity di file ini
+    const {selectedActivity: activity, loadActivity, loadingInitial, clearSelectedActivity} = activityStore; //: activity mksdnya itu didefine as activity di file ini
     const {id} = useParams();
 
     useEffect(() => {
         if (id) loadActivity(id);
-    }, [id, loadActivity])
+        return () => clearSelectedActivity();
+    }, [id, loadActivity, clearSelectedActivity])
 
     if(loadingInitial || !activity) return <LoadingComponent content={""} />; //cek apa ada activity, walau fix ada. ini mah cm bwt ngilangin errornya aja
 
@@ -46,7 +47,7 @@ export default observer(function ActivityDetails(){
             <Grid.Column width={10}>
                 <ActivityDetailedHeader activity={activity} />
                 <ActivityDetailedInfo activity={activity} />
-                <ActivityDetailedChat />
+                <ActivityDetailedChat activityId={activity.id}/>
             </Grid.Column>
             <Grid.Column width={6}>
                 <ActivityDetailedSidebar activity={activity} />
