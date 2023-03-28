@@ -37,8 +37,12 @@ app.UseCors("CorsPolicy"); // cross origin resource sharing, bwt wharing sama yg
 app.UseAuthentication(); // pastikan sebelum authorization, ditambah klo authenticate token (lect 136)
 app.UseAuthorization(); // authorizes a user to access secure resources.
 
+app.UseDefaultFiles(); // look inside wwwroot folder dan use it
+app.UseStaticFiles();
+
 app.MapControllers();
 app.MapHub<ChatHub>("/chat"); // specify route buat user ketika connect to chathub
+app.MapFallbackToController("Index","Fallback"); // krn di fallback controller ada method Index dan nama classnya FallbackController
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { Activity, ActivityFormValues } from '../models/activity';
+import { PaginatedResult } from '../models/pagination';
 import { Photo, Profile } from '../models/profile';
 import { User, UserFormValues } from '../models/user';
 import { router } from '../router/Routes';
@@ -12,7 +13,7 @@ const sleep = (delay: number) => {
     })
 }
 
-axios.defaults.baseURL = 'http://localhost:5000/api';
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 axios.interceptors.request.use(config => { //apa yang dilakukan saat api request
     const token = store.commonStore.token;
@@ -21,8 +22,13 @@ axios.interceptors.request.use(config => { //apa yang dilakukan saat api request
 }) 
 
 axios.interceptors.response.use(async response => { // interceptor: apa yg dilakukan klo api selesai
-        await sleep(1000);
-        return response;
+    if(process.env.NODE_ENV === 'development') await sleep(1000);        
+    const pagination = response.headers['pagination']; // cek apakah ada header pagination. for some reasone walau di backend Pnya gede, di sini harus p kecil
+    if(pagination){
+        response.data = new PaginatedResult(response.data, JSON.parse(pagination)) // ubah json langsung jadi objek
+        return response as AxiosResponse<PaginatedResult<any>>;
+    }
+    return response;
 }, (error: AxiosError) => { // setelah koma, itu deals when a request is rejected
     const {data, status, config} = error.response as AxiosResponse;
     switch (status) {
@@ -74,7 +80,7 @@ const requests = {
 
 // method2 api
 const Activities = {
-    list: () => requests.get<Activity[]>('/activities'),
+    list: (params: URLSearchParams) => axios.get<PaginatedResult<Activity[]>>('/activities', {params}).then(responseBody),
     details: (id: string) => requests.get<Activity>(`/activities/${id}`),
     create: (activity: ActivityFormValues) => requests.post('/activities',activity), // send activity object
     update: (activity: ActivityFormValues) => requests.put(`/activities/${activity.id}`,activity),

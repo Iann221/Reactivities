@@ -2,7 +2,7 @@ import { Container} from 'semantic-ui-react';
 import NavBar from './NavBar';
 import { useStore } from '../stores/store';
 import { observer } from 'mobx-react-lite';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, ScrollRestoration, useLocation } from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
 import { Fragment, useEffect } from 'react';
 import { ToastContainer} from 'react-toastify';
@@ -73,6 +73,7 @@ function App() {
 
   return (
     <div>
+        <ScrollRestoration />
         <ModalContainer />
         <ToastContainer position='bottom-right' hideProgressBar theme='colored' />
         {location.pathname === '/' ? <HomePage /> : (
@@ -83,7 +84,7 @@ function App() {
           <Button onClick={activityStore.setTitle}>add exclamation</Button> */}
           {/* <ActivityDashboard /> */}
           <Outlet />
-          {/* // kalo pake router, outlet akan berubha tergantung routenya */}
+          {/* // kalo pake router, outlet akan berubah tergantung routenya */}
         </Container> 
           </>
         )} 

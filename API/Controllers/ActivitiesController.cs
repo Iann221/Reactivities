@@ -1,5 +1,6 @@
 
 using Application.Activities;
+using Application.Core;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +11,9 @@ namespace API.Controllers
     {
 
         [HttpGet] //api/activities, ngesetnya dari nama classnya, klo namanya NaniController, rootnya api/nani
-        public async Task<IActionResult> GetActivities() 
+        public async Task<IActionResult> GetActivities([FromQuery]ActivityParams param) 
         {
-            return HandleResult(await Mediator.Send(new List.Query()));
+            return HandlePagedResult(await Mediator.Send(new List.Query{Params = param}));
         }
 
         // [Authorize] // cuma bisa get activity kalo authenticated dan authorized

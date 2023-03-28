@@ -2,7 +2,7 @@ using System.Net;
 using System.Text.Json;
 using Application.Core;
 
-namespace API.Middleware
+namespace API.Middleware // lihat bab error handling
 {
     public class ExceptionMiddleware
     {
