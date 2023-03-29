@@ -1,0 +1,34 @@
+# fly.toml file generated for reactivities-iann221 on 2023-03-28T20:58:36+07:00
+
+app = "reactivities-iann221"
+kill_signal = "SIGINT"
+kill_timeout = 5
+mounts = []
+primary_region = "sin"
+processes = []
+
+[build]
+  image = "iann221/reactivities:latest"
+
+[env]
+  ASPNETCORE_URLS="http://+:8080"
+  Cloudinary__CloudName="dlzuzgxvl"
+  Cloudinary__APIKey="628177368567819"
+
+[[services]]
+  internal_port = 8080
+  processes = ["app"]
+  protocol = "tcp"
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
